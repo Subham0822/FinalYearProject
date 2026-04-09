@@ -1,0 +1,79 @@
+version: "3.9"
+
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+    command: uvicorn services.api_gateway.main:app --host 0.0.0.0 --port 8000
+    environment:
+      DATA_SERVICE_URL: http://data-service:8001
+      FORECASTING_SERVICE_URL: http://forecasting-service:8002
+      ROUTING_SERVICE_URL: http://routing-service:8003
+    depends_on:
+      - data-service
+      - forecasting-service
+      - routing-service
+    ports:
+      - "8000:8000"
+
+  data-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+    command: uvicorn services.data_service.main:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+
+  forecasting-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+    command: uvicorn services.forecasting_service.main:app --host 0.0.0.0 --port 8002
+    environment:
+      DATA_SERVICE_URL: http://data-service:8001
+      REDIS_URL: redis://redis:6379/0
+      FORECAST_CACHE_TTL_SECONDS: 900
+    depends_on:
+      - data-service
+      - redis
+    ports:
+      - "8002:8002"
+
+  routing-service:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+    command: uvicorn services.routing_service.main:app --host 0.0.0.0 --port 8003
+    environment:
+      DATA_SERVICE_URL: http://data-service:8001
+      FORECASTING_SERVICE_URL: http://forecasting-service:8002
+      REDIS_URL: redis://redis:6379/0
+      ROUTE_CACHE_TTL_SECONDS: 180
+      OSRM_URL: ${OSRM_URL:-https://router.project-osrm.org}
+    depends_on:
+      - data-service
+      - forecasting-service
+      - redis
+    ports:
+      - "8003:8003"
+
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: voltpath
+      POSTGRES_USER: voltpath
+      POSTGRES_PASSWORD: voltpath
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:

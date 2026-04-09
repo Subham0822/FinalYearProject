@@ -77,6 +77,24 @@ The next phase of the project will focus on integrating richer real-time data, i
 This project addresses the Electric Vehicle Routing Problem using an AI-based approach that combines route feasibility, charging station availability, time-of-day effects, and dynamic charging prices. The work completed so far has resulted in a functional prototype with clear deliverables and a strong base for further development in the final phase.
 
 ## References
-[1] Schneider, M., Stenger, A., and Goeke, D., “The Electric Vehicle Routing Problem with Time Windows and Recharging Stations,” Transportation Science, vol. 48, no. 4, pp. 500–520, 2014.
-[2] Montoya, A., Guéret, C., Mendoza, J. E., and Villegas, J. G., “The Electric Vehicle Routing Problem with Nonlinear Charging Function,” Transportation Research Part B, vol. 103, pp. 87–110, 2017.
-[3] Google, “Electric Vehicle Routing in Google Maps,” Google AI Blog, 2021. [Online]. Available: https://ai.googleblog.com/
+[1] Next.js, “Next.js Documentation.” [Online]. Available: https://nextjs.org/docs
+
+[2] React, “React Documentation.” [Online]. Available: https://react.dev/
+
+[3] FastAPI, “FastAPI Documentation.” [Online]. Available: https://fastapi.tiangolo.com/
+
+[4] Open Charge Map, “Open Charge Map.” [Online]. Available: https://openchargemap.org/
+
+[5] Project OSRM, “Open Source Routing Machine API Documentation.” [Online]. Available: https://project-osrm.org/docs/v5.24.0/api/
+
+[6] Redis, “Redis Documentation.” [Online]. Available: https://redis.io/docs/latest/
+
+[7] PostgreSQL Global Development Group, “PostgreSQL Documentation.” [Online]. Available: https://www.postgresql.org/docs/
+
+[8] PostGIS Project Steering Committee, “PostGIS Documentation.” [Online]. Available: https://postgis.net/documentation/
+
+[9] Leaflet, “Leaflet Documentation.” [Online]. Available: https://leafletjs.com/
+
+[10] React Leaflet, “React Leaflet Documentation.” [Online]. Available: https://react-leaflet.js.org/
+
+[11] WiseLibs, “better-sqlite3.” [Online]. Available: https://github.com/WiseLibs/better-sqlite3

@@ -210,6 +210,8 @@ export function TripPlanner() {
 
     return uniqueRoutes;
   }, [routeOptions]);
+  const isBusy = loading || refreshing;
+  const busyLabel = loading ? "Analyzing route options" : "Refreshing live route data";
 
   useEffect(() => {
     const saved = window.localStorage.getItem(THEME_STORAGE_KEY) as ThemePreference | null;
@@ -576,7 +578,20 @@ export function TripPlanner() {
           {error ? <p className="error-text">{error}</p> : null}
         </form>
 
-        <section className="panel route-panel">
+        <section className={`panel route-panel${isBusy ? " route-panel-busy" : ""}`}>
+          {isBusy ? (
+            <div className="route-loading-overlay" aria-live="polite" aria-busy="true">
+              <div className="route-loading-card">
+                <span className="route-loading-spinner" aria-hidden="true" />
+                <strong>{busyLabel}</strong>
+                <p>
+                  {loading
+                    ? "Checking geometry, charger availability, traffic pressure, and charging trade-offs."
+                    : "Pulling the latest charger conditions and recalculating the best route."}
+                </p>
+              </div>
+            </div>
+          ) : null}
           {liveAlert ? (
             <div className="live-banner">
               <div>
@@ -596,7 +611,7 @@ export function TripPlanner() {
 
           {selectedRoute ? (
             <>
-              <div className="route-stage">
+              <div className={`route-stage${refreshing ? " content-updating" : ""}`}>
                 <div className="map-stage">
                   <div className="section-head">
                     <div>
@@ -783,7 +798,7 @@ export function TripPlanner() {
                 </div>
               ) : null}
 
-              <div className="details-grid">
+              <div className={`details-grid${refreshing ? " content-updating" : ""}`}>
                 <div className="station-list">
                   <div className="section-head">
                     <div>
@@ -856,6 +871,19 @@ export function TripPlanner() {
                 </div>
               </div>
             </>
+          ) : loading ? (
+            <div className="route-loading-shell" aria-hidden="true">
+              <div className="route-loading-shell-map loading-skeleton" />
+              <div className="route-loading-shell-cards">
+                <div className="route-loading-shell-card loading-skeleton" />
+                <div className="route-loading-shell-card loading-skeleton" />
+                <div className="route-loading-shell-card loading-skeleton" />
+              </div>
+              <div className="route-loading-shell-details">
+                <div className="route-loading-shell-detail loading-skeleton" />
+                <div className="route-loading-shell-detail loading-skeleton" />
+              </div>
+            </div>
           ) : (
             <div className="empty-state">
               <strong>Run a route scan to start live monitoring.</strong>
